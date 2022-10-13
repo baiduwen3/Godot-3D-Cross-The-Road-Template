@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://scripts/auto_left_dir.gd" type="Script" id=1]
+
+[sub_resource type="CapsuleMesh" id=35]
+
+[sub_resource type="CapsuleShape" id=36]
+
+[node name="auto2" type="Area"]
+transform = Transform( -6.55671e-07, 0, 15, 0, 15, 0, -15, 0, -6.55671e-07, 159, 18, 61 )
+script = ExtResource( 1 )
+
+[node name="MeshInstance" type="MeshInstance" parent="."]
+mesh = SubResource( 35 )
+
+[node name="CollisionShape" type="CollisionShape" parent="."]
+transform = Transform( 0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, 0, 0, 0 )
+shape = SubResource( 36 )
+
+[connection signal="body_entered" from="." to="." method="_on_auto2_body_entered"]
