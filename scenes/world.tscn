@@ -1,4 +1,4 @@
-[gd_scene load_steps=64 format=2]
+[gd_scene load_steps=67 format=2]
 
 [ext_resource path="res://assets/player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://imports/textures/floor_texture2.png" type="Texture" id=2]
@@ -13,7 +13,9 @@
 [ext_resource path="res://scripts/objects.gd" type="Script" id=11]
 [ext_resource path="res://scripts/world.gd" type="Script" id=12]
 [ext_resource path="res://fonts/Roboto-Regular.ttf" type="DynamicFontData" id=13]
+[ext_resource path="res://animations/open_door_anim2.tres" type="Animation" id=14]
 [ext_resource path="res://animations/open_door_anim.tres" type="Animation" id=15]
+[ext_resource path="res://assets/player_mesh_pose.tscn" type="PackedScene" id=16]
 
 [sub_resource type="SpatialMaterial" id=1]
 albedo_texture = ExtResource( 2 )
@@ -29,6 +31,33 @@ size = Vector3( 200, 2, 400 )
 
 [sub_resource type="ConcavePolygonShape" id=3]
 data = PoolVector3Array( -100, 1, 200, 100, 1, 200, -100, -1, 200, 100, 1, 200, 100, -1, 200, -100, -1, 200, 100, 1, -200, -100, 1, -200, 100, -1, -200, -100, 1, -200, -100, -1, -200, 100, -1, -200, 100, 1, 200, 100, 1, -200, 100, -1, 200, 100, 1, -200, 100, -1, -200, 100, -1, 200, -100, 1, -200, -100, 1, 200, -100, -1, -200, -100, 1, 200, -100, -1, 200, -100, -1, -200, 100, 1, 200, -100, 1, 200, 100, 1, -200, -100, 1, 200, -100, 1, -200, 100, 1, -200, -100, -1, 200, 100, -1, 200, -100, -1, -200, 100, -1, 200, 100, -1, -200, -100, -1, -200 )
+
+[sub_resource type="Animation" id=58]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("door:translation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 1.4, 0, 0 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("door:rotation_degrees")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0, 0 ) ]
+}
 
 [sub_resource type="SpatialMaterial" id=48]
 albedo_color = Color( 0.803922, 0.803922, 0.803922, 1 )
@@ -230,14 +259,19 @@ script = ExtResource( 11 )
 [node name="mini_container" parent="scenario/objects" instance=ExtResource( 10 )]
 transform = Transform( -3.49691e-07, 0, -8, 0, 8, 0, 8, 0, -3.49691e-07, 35, 13.073, -145 )
 
-[node name="Cube002" parent="scenario/objects/mini_container/door/Cube001" index="0"]
-transform = Transform( 0.333334, 0, 0, 0, 0.7, 0, 0, 0, 0.8, 0, 0, 0 )
-
 [node name="open_door_anim" type="AnimationPlayer" parent="scenario/objects/mini_container"]
 anims/open_door_anim = ExtResource( 15 )
 
+[node name="player_mesh_pose" parent="scenario/objects/mini_container" instance=ExtResource( 16 )]
+transform = Transform( 0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, -0.25, -1.25, 0 )
+visible = false
+
 [node name="mini_container2" parent="scenario/objects" instance=ExtResource( 10 )]
 transform = Transform( -3.49691e-07, 0, -8, 0, 8, 0, 8, 0, -3.49691e-07, -35, 13.0728, -145 )
+
+[node name="open_door_anim2" type="AnimationPlayer" parent="scenario/objects/mini_container2"]
+anims/RESET = SubResource( 58 )
+anims/open_door_anim2 = ExtResource( 14 )
 
 [node name="columns" type="Spatial" parent="scenario/objects"]
 
@@ -297,7 +331,7 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.64396, 0 )
 shape = SubResource( 41 )
 
 [node name="column3" type="StaticBody" parent="scenario/objects/columns"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -35, 26.3, -95 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -16, 26.3, -95 )
 
 [node name="MeshInstance" type="MeshInstance" parent="scenario/objects/columns/column3"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.64396, 0 )
@@ -385,10 +419,18 @@ shape = SubResource( 54 )
 [node name="Timer_rgt" type="Timer" parent="scenario/objects"]
 wait_time = 0.001
 
+[node name="Timer_lft" type="Timer" parent="scenario/objects"]
+wait_time = 0.001
+
 [node name="3d_text" type="Spatial" parent="scenario/objects"]
 
 [node name="tx_Mesh" type="MeshInstance" parent="scenario/objects/3d_text"]
 transform = Transform( 1, 0, 0, 0, 0.5, 0.866025, 0, -0.866025, 0.5, 35, 56, -17 )
+visible = false
+mesh = SubResource( 57 )
+
+[node name="tx_Mesh2" type="MeshInstance" parent="scenario/objects/3d_text"]
+transform = Transform( 1, 0, 0, 0, 0.5, 0.866025, 0, -0.866025, 0.5, -70, 56, -74 )
 visible = false
 mesh = SubResource( 57 )
 
@@ -651,6 +693,12 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4, 175.4 )
 [node name="test_position" type="Position3D" parent="positions"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 33, 6, 9 )
 
+[node name="cnt_camera_pos" type="Position3D" parent="positions"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 33.454, 35, -86.431 )
+
+[node name="cnt_camera2_pos" type="Position3D" parent="positions"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -35, 35, -86.431 )
+
 [node name="area_limits" type="Spatial" parent="."]
 transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 9, 83 )
 script = ExtResource( 7 )
@@ -668,8 +716,8 @@ transform = Transform( 1, 0, -7.10543e-15, 0, 1, 0, 7.10543e-15, 0, 1, -23, 12, 
 [node name="CollisionShape" type="CollisionShape" parent="area_limits/right_area_lim"]
 shape = SubResource( 35 )
 
-[node name="Camera" type="Camera" parent="."]
-transform = Transform( 0.994647, 0, 0.103331, 0, 1, 0, -0.103331, 0, 0.994647, 33.4545, 25, -88.4311 )
+[node name="containers_camera" type="Camera" parent="."]
+transform = Transform( 1, 0, 0, 0, 0.965926, 0.258819, 0, -0.258819, 0.965926, 33.4545, 35, -86.4311 )
 environment = SubResource( 36 )
 far = 300.0
 
@@ -680,12 +728,18 @@ transform = Transform( 1, 0, 0, 0, -0.258819, 0.965926, 0, -0.965926, -0.258819,
 light_energy = 0.4
 shadow_enabled = true
 
+[connection signal="body_entered" from="scenario/objects/mini_container/cnt_snr_area" to="scenario/objects" method="_on_cnt_snr_area_body_entered"]
+[connection signal="animation_finished" from="scenario/objects/mini_container/open_door_anim" to="scenario/objects" method="_on_open_door_anim_animation_finished"]
 [connection signal="body_entered" from="scenario/objects/columns/trg_column/action_sensor" to="scenario/objects" method="_on_action_sensor_body_entered"]
 [connection signal="body_exited" from="scenario/objects/columns/trg_column/action_sensor" to="scenario/objects" method="_on_action_sensor_body_exited"]
+[connection signal="body_entered" from="scenario/objects/columns/trg_column2/action_sensor2" to="scenario/objects" method="_on_action_sensor2_body_entered"]
+[connection signal="body_exited" from="scenario/objects/columns/trg_column2/action_sensor2" to="scenario/objects" method="_on_action_sensor2_body_exited"]
 [connection signal="timeout" from="scenario/objects/Timer_rgt" to="scenario/objects" method="_on_Timer_rgt_timeout"]
+[connection signal="timeout" from="scenario/objects/Timer_lft" to="scenario/objects" method="_on_Timer_lft_timeout"]
 [connection signal="timeout" from="scenario/autos/spawn_timer" to="scenario/autos/autos_left" method="_on_spawn_timer_timeout"]
 [connection signal="timeout" from="scenario/autos/spawn_timer" to="scenario/autos/autos_right" method="_on_spawn_timer_timeout"]
 [connection signal="area_entered" from="area_limits/left_area_lim" to="scenario/autos/autos_right" method="_on_left_area_lim_area_entered"]
 [connection signal="area_entered" from="area_limits/right_area_lim" to="scenario/autos/autos_left" method="_on_right_area_lim_area_entered"]
 
 [editable path="scenario/objects/mini_container"]
+[editable path="scenario/objects/mini_container2"]

@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://imports/door_window_mat.material" type="Material" id=1]
 [ext_resource path="res://imports/container_mat.material" type="Material" id=2]
@@ -81,6 +81,9 @@ surfaces/0 = {
 "vertex_count": 192
 }
 
+[sub_resource type="BoxShape" id=8]
+extents = Vector3( 0.438115, 1.20327, 1 )
+
 [node name="mini_container" type="StaticBody"]
 
 [node name="Cube" type="MeshInstance" parent="."]
@@ -99,7 +102,7 @@ transform = Transform( 0.15, 0, 0, 0, 1.5, 0, 0, 0, 1.25, 0, 0, 0 )
 mesh = SubResource( 2 )
 skeleton = NodePath("../..")
 
-[node name="Cube002" type="MeshInstance" parent="door/Cube001"]
+[node name="glass" type="MeshInstance" parent="door/Cube001"]
 transform = Transform( 0.333334, 0, 0, 0, 0.7, 0, 0, 0, 0.8, -0.00552845, 0, 0 )
 mesh = SubResource( 3 )
 
@@ -110,3 +113,10 @@ shape = SubResource( 6 )
 [node name="cnt_state_light" type="MeshInstance" parent="."]
 transform = Transform( 0.25, 0, 0, 0, 0.75, 0, 0, 0, 0.25, 0.436553, 0, -1.50094 )
 mesh = SubResource( 4 )
+
+[node name="cnt_snr_area" type="Area" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.49081, 0, 0 )
+
+[node name="cllsn" type="CollisionShape" parent="cnt_snr_area"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.810558, 0, 0 )
+shape = SubResource( 8 )

@@ -7,6 +7,7 @@ var speed = 420
 var gravity= -4
 var jump_force = 60
 
+var cinematic_state = false
 
 func _ready():
 	pass
@@ -70,6 +71,13 @@ func _physics_process(delta):
 		vec_pos.z= lerp(vec_pos.z,0,0.4)
 		pass
 	
+	if cinematic_state == true:
+		vec_pos.z = 0 
+		vec_pos.x = 0
+		vec_pos.y = 0
+		jump_force = 0
+		$AnimationPlayer.stop()
+		$Armature/Skeleton/Cube.rotation_degrees.y = 0	
 	
 	vec_pos.y += gravity
 		
