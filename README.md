@@ -25,6 +25,8 @@ Version: 1.0
 References:
 --------------------------------------------------
  3D objects: made in blender and primitive figures
+ -Player rigged in blender
+ -Player animated in blender
  Floor texture: made in gimp
  Font: Roboto-Regular
 
