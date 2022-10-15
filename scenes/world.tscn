@@ -1,4 +1,4 @@
-[gd_scene load_steps=67 format=2]
+[gd_scene load_steps=68 format=2]
 
 [ext_resource path="res://assets/player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://imports/textures/floor_texture2.png" type="Texture" id=2]
@@ -16,6 +16,7 @@
 [ext_resource path="res://animations/open_door_anim2.tres" type="Animation" id=14]
 [ext_resource path="res://animations/open_door_anim.tres" type="Animation" id=15]
 [ext_resource path="res://assets/player_mesh_pose.tscn" type="PackedScene" id=16]
+[ext_resource path="res://fonts/roboto_with_settings.tres" type="DynamicFont" id=17]
 
 [sub_resource type="SpatialMaterial" id=1]
 albedo_texture = ExtResource( 2 )
@@ -232,7 +233,6 @@ extents = Vector3( 16, 22, 22 )
 
 [node name="world" type="Spatial"]
 script = ExtResource( 12 )
-testing = true
 
 [node name="scenario" type="Spatial" parent="."]
 
@@ -272,6 +272,9 @@ transform = Transform( -3.49691e-07, 0, -8, 0, 8, 0, 8, 0, -3.49691e-07, -35, 13
 [node name="open_door_anim2" type="AnimationPlayer" parent="scenario/objects/mini_container2"]
 anims/RESET = SubResource( 58 )
 anims/open_door_anim2 = ExtResource( 14 )
+
+[node name="cnt2_player_instance_pos" type="Position3D" parent="scenario/objects/mini_container2"]
+transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -0.25, -1.25, 0 )
 
 [node name="columns" type="Spatial" parent="scenario/objects"]
 
@@ -685,6 +688,59 @@ far = 300.0
 margin_right = 40.0
 margin_bottom = 40.0
 
+[node name="hud" type="Control" parent="ui"]
+margin_right = 40.0
+margin_bottom = 40.0
+
+[node name="MarginContainer" type="MarginContainer" parent="ui/hud"]
+margin_right = 1024.0
+margin_bottom = 600.0
+custom_constants/margin_top = 40
+custom_constants/margin_left = 40
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ui/hud/MarginContainer"]
+margin_left = 40.0
+margin_top = 40.0
+margin_right = 1024.0
+margin_bottom = 600.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="ui/hud/MarginContainer/VBoxContainer"]
+margin_right = 984.0
+margin_bottom = 42.0
+custom_constants/separation = 10
+
+[node name="score_text" type="Label" parent="ui/hud/MarginContainer/VBoxContainer/HBoxContainer"]
+margin_right = 98.0
+margin_bottom = 42.0
+custom_fonts/font = ExtResource( 17 )
+text = "Score:"
+
+[node name="score_value" type="Label" parent="ui/hud/MarginContainer/VBoxContainer/HBoxContainer"]
+margin_left = 108.0
+margin_right = 128.0
+margin_bottom = 42.0
+custom_fonts/font = ExtResource( 17 )
+text = "0"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="ui/hud/MarginContainer/VBoxContainer"]
+margin_top = 46.0
+margin_right = 984.0
+margin_bottom = 88.0
+custom_constants/separation = 10
+
+[node name="time_text" type="Label" parent="ui/hud/MarginContainer/VBoxContainer/HBoxContainer2"]
+margin_right = 88.0
+margin_bottom = 42.0
+custom_fonts/font = ExtResource( 17 )
+text = "Time:"
+
+[node name="time_value" type="Label" parent="ui/hud/MarginContainer/VBoxContainer/HBoxContainer2"]
+margin_left = 98.0
+margin_right = 146.0
+margin_bottom = 42.0
+custom_fonts/font = ExtResource( 17 )
+text = "0:0"
+
 [node name="positions" type="Spatial" parent="."]
 
 [node name="initial_position" type="Position3D" parent="positions"]
@@ -730,6 +786,8 @@ shadow_enabled = true
 
 [connection signal="body_entered" from="scenario/objects/mini_container/cnt_snr_area" to="scenario/objects" method="_on_cnt_snr_area_body_entered"]
 [connection signal="animation_finished" from="scenario/objects/mini_container/open_door_anim" to="scenario/objects" method="_on_open_door_anim_animation_finished"]
+[connection signal="body_entered" from="scenario/objects/mini_container2/cnt_snr_area" to="scenario/objects" method="_on_cnt2_snr_area_body_entered"]
+[connection signal="animation_finished" from="scenario/objects/mini_container2/open_door_anim2" to="scenario/objects" method="_on_open_door_anim2_animation_finished"]
 [connection signal="body_entered" from="scenario/objects/columns/trg_column/action_sensor" to="scenario/objects" method="_on_action_sensor_body_entered"]
 [connection signal="body_exited" from="scenario/objects/columns/trg_column/action_sensor" to="scenario/objects" method="_on_action_sensor_body_exited"]
 [connection signal="body_entered" from="scenario/objects/columns/trg_column2/action_sensor2" to="scenario/objects" method="_on_action_sensor2_body_entered"]

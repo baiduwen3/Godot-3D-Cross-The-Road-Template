@@ -76,6 +76,7 @@ func _on_cnt_snr_area_body_entered(body):
 	if body.name=="player":
 		$mini_container/player_mesh_pose.visible = true
 		$"../../player/Camera".current = false
+		$"../../containers_camera".global_transform.origin = $"../../positions/cnt_camera_pos".global_transform.origin
 		$"../../containers_camera".current = true
 		$mini_container/open_door_anim.play_backwards("open_door_anim")
 		$"../../player".global_transform.origin = $"../../positions/initial_position".global_transform.origin
@@ -90,6 +91,38 @@ func _on_cnt_snr_area_body_entered(body):
 
 
 func _on_open_door_anim_animation_finished(anim_name):
+	$"../../player/Camera".current = true
+	$"../../containers_camera".current = false
+	$"../../player".cinematic_state = false
+
+
+func _on_cnt2_snr_area_body_entered(body):
+	if body.name=="player":
+		#para el segundo contenedor estoy instanciando el objeto player_mesh_pose para que se cargue hasta que se mande la señal
+		var plyr_inst = preload("res://assets/player_mesh_pose.tscn").instance()
+		plyr_inst.scale.x = 0.3
+		plyr_inst.scale.y = 0.3
+		plyr_inst.scale.z = 0.3
+		
+		$mini_container2.add_child(plyr_inst)
+		plyr_inst.global_transform.origin = $mini_container2/cnt2_player_instance_pos.global_transform.origin
+#		$mini_container/player_mesh_pose.visible = true
+		$"../../player/Camera".current = false
+		$"../../containers_camera".global_transform.origin = $"../../positions/cnt_camera2_pos".global_transform.origin 
+		$"../../containers_camera".current = true
+		$mini_container2/open_door_anim2.play_backwards("open_door_anim2")
+		$"../../player".global_transform.origin = $"../../positions/initial_position".global_transform.origin
+		$"../../player".cinematic_state = true
+		var yellow_mat= SpatialMaterial.new()
+		yellow_mat.albedo_color= Color("#ffcd02")
+		yellow_mat.emission_enabled = true
+		yellow_mat.emission = Color("#ffcd02")
+		yellow_mat.emission_energy = 4	
+		clmn_btn2.set_surface_material(0,yellow_mat)
+		m_cnt_light2.set_surface_material(0,yellow_mat)
+
+
+func _on_open_door_anim2_animation_finished(anim_name):
 	$"../../player/Camera".current = true
 	$"../../containers_camera".current = false
 	$"../../player".cinematic_state = false
