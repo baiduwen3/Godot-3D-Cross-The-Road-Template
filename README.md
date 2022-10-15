@@ -15,7 +15,7 @@ Description:
 Controls:
 --------------------------------------------------
  Player Movement: `Arrow Keys`
- Action: `E`
+ Door container trigger: `E`
  
 --------------------------------------------------
 Version: 1.0
