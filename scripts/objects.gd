@@ -7,6 +7,11 @@ onready var m_cnt_light2 = $mini_container2/cnt_state_light
 onready var clmn_btn = $columns/trg_column/trg_button
 onready var clmn_btn2 = $columns/trg_column2/trg_button2
 
+signal in_container
+signal in_container2
+
+var container_count = 0
+
 func _ready():
 	pass
 	
@@ -74,6 +79,8 @@ func _on_action_sensor2_body_exited(body):
 
 func _on_cnt_snr_area_body_entered(body):
 	if body.name=="player":
+		container_count += 1
+		emit_signal("in_container")
 		$mini_container/player_mesh_pose.visible = true
 		$"../../player/Camera".current = false
 		$"../../containers_camera".global_transform.origin = $"../../positions/cnt_camera_pos".global_transform.origin
@@ -91,14 +98,20 @@ func _on_cnt_snr_area_body_entered(body):
 
 
 func _on_open_door_anim_animation_finished(anim_name):
-	$"../../player/Camera".current = true
-	$"../../containers_camera".current = false
-	$"../../player".cinematic_state = false
+	if container_count < 2:
+		$"../../player/Camera".current = true
+		$"../../containers_camera".current = false
+		$"../../player".cinematic_state = false
+	else:
+		$"../../ui/hud/MarginContainer/VBoxContainer/HBoxContainer2/time_timer".stop()
+		$"../../containers_camera".global_transform.origin = $"../../positions/final_camera_pos".global_transform.origin
 
 
 func _on_cnt2_snr_area_body_entered(body):
 	if body.name=="player":
-		#para el segundo contenedor estoy instanciando el objeto player_mesh_pose para que se cargue hasta que se mande la señal
+		#para el segundo contenedor estoy instanciando el objeto player_mesh_pose para que se cargue hasta que se requiera
+		container_count += 1
+		emit_signal("in_container2")
 		var plyr_inst = preload("res://assets/player_mesh_pose.tscn").instance()
 		plyr_inst.scale.x = 0.3
 		plyr_inst.scale.y = 0.3
@@ -123,6 +136,10 @@ func _on_cnt2_snr_area_body_entered(body):
 
 
 func _on_open_door_anim2_animation_finished(anim_name):
-	$"../../player/Camera".current = true
-	$"../../containers_camera".current = false
-	$"../../player".cinematic_state = false
+	if container_count < 2:
+		$"../../player/Camera".current = true
+		$"../../containers_camera".current = false
+		$"../../player".cinematic_state = false
+	else:
+		$"../../ui/hud/MarginContainer/VBoxContainer/HBoxContainer2/time_timer".stop()
+		$"../../containers_camera".global_transform.origin = $"../../positions/final_camera_pos".global_transform.origin

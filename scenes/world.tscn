@@ -1,4 +1,4 @@
-[gd_scene load_steps=68 format=2]
+[gd_scene load_steps=70 format=2]
 
 [ext_resource path="res://assets/player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://imports/textures/floor_texture2.png" type="Texture" id=2]
@@ -17,6 +17,7 @@
 [ext_resource path="res://animations/open_door_anim.tres" type="Animation" id=15]
 [ext_resource path="res://assets/player_mesh_pose.tscn" type="PackedScene" id=16]
 [ext_resource path="res://fonts/roboto_with_settings.tres" type="DynamicFont" id=17]
+[ext_resource path="res://scripts/hud.gd" type="Script" id=18]
 
 [sub_resource type="SpatialMaterial" id=1]
 albedo_texture = ExtResource( 2 )
@@ -143,9 +144,16 @@ emission_energy = 2.0
 emission_operator = 0
 emission_on_uv2 = false
 
+[sub_resource type="TextMesh" id=59]
+material = SubResource( 56 )
+text = "Press \"E\" to open right container"
+font = SubResource( 55 )
+pixel_size = 0.02
+depth = 0.5
+
 [sub_resource type="TextMesh" id=57]
 material = SubResource( 56 )
-text = "Press \"E\" to activate"
+text = "Press \"E\" to open left container"
 font = SubResource( 55 )
 pixel_size = 0.02
 depth = 0.5
@@ -337,10 +345,32 @@ shape = SubResource( 41 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -16, 26.3, -95 )
 
 [node name="MeshInstance" type="MeshInstance" parent="scenario/objects/columns/column3"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.64396, 0 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 4.64396, 0 )
 mesh = SubResource( 37 )
 
 [node name="CollisionShape" type="CollisionShape" parent="scenario/objects/columns/column3"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.64396, 0 )
+shape = SubResource( 42 )
+
+[node name="column10" type="StaticBody" parent="scenario/objects/columns"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -67, 26.3, -117 )
+
+[node name="MeshInstance" type="MeshInstance" parent="scenario/objects/columns/column10"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 4.64396, 0 )
+mesh = SubResource( 37 )
+
+[node name="CollisionShape" type="CollisionShape" parent="scenario/objects/columns/column10"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.64396, 0 )
+shape = SubResource( 42 )
+
+[node name="column11" type="StaticBody" parent="scenario/objects/columns"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 59, 26.3, -124 )
+
+[node name="MeshInstance" type="MeshInstance" parent="scenario/objects/columns/column11"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 4.64396, 0 )
+mesh = SubResource( 37 )
+
+[node name="CollisionShape" type="CollisionShape" parent="scenario/objects/columns/column11"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.64396, 0 )
 shape = SubResource( 42 )
 
@@ -430,7 +460,7 @@ wait_time = 0.001
 [node name="tx_Mesh" type="MeshInstance" parent="scenario/objects/3d_text"]
 transform = Transform( 1, 0, 0, 0, 0.5, 0.866025, 0, -0.866025, 0.5, 35, 56, -17 )
 visible = false
-mesh = SubResource( 57 )
+mesh = SubResource( 59 )
 
 [node name="tx_Mesh2" type="MeshInstance" parent="scenario/objects/3d_text"]
 transform = Transform( 1, 0, 0, 0, 0.5, 0.866025, 0, -0.866025, 0.5, -70, 56, -74 )
@@ -691,6 +721,7 @@ margin_bottom = 40.0
 [node name="hud" type="Control" parent="ui"]
 margin_right = 40.0
 margin_bottom = 40.0
+script = ExtResource( 18 )
 
 [node name="MarginContainer" type="MarginContainer" parent="ui/hud"]
 margin_right = 1024.0
@@ -726,7 +757,7 @@ text = "0"
 margin_top = 46.0
 margin_right = 984.0
 margin_bottom = 88.0
-custom_constants/separation = 10
+custom_constants/separation = 5
 
 [node name="time_text" type="Label" parent="ui/hud/MarginContainer/VBoxContainer/HBoxContainer2"]
 margin_right = 88.0
@@ -734,12 +765,29 @@ margin_bottom = 42.0
 custom_fonts/font = ExtResource( 17 )
 text = "Time:"
 
-[node name="time_value" type="Label" parent="ui/hud/MarginContainer/VBoxContainer/HBoxContainer2"]
-margin_left = 98.0
-margin_right = 146.0
+[node name="min_value" type="Label" parent="ui/hud/MarginContainer/VBoxContainer/HBoxContainer2"]
+margin_left = 93.0
+margin_right = 113.0
 margin_bottom = 42.0
 custom_fonts/font = ExtResource( 17 )
-text = "0:0"
+text = "0"
+
+[node name="separation" type="Label" parent="ui/hud/MarginContainer/VBoxContainer/HBoxContainer2"]
+margin_left = 118.0
+margin_right = 126.0
+margin_bottom = 42.0
+custom_fonts/font = ExtResource( 17 )
+text = ":"
+
+[node name="sec_value" type="Label" parent="ui/hud/MarginContainer/VBoxContainer/HBoxContainer2"]
+margin_left = 131.0
+margin_right = 151.0
+margin_bottom = 42.0
+custom_fonts/font = ExtResource( 17 )
+text = "0"
+
+[node name="time_timer" type="Timer" parent="ui/hud/MarginContainer/VBoxContainer/HBoxContainer2"]
+autostart = true
 
 [node name="positions" type="Spatial" parent="."]
 
@@ -754,6 +802,9 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 33.454, 35, -86.431 )
 
 [node name="cnt_camera2_pos" type="Position3D" parent="positions"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -35, 35, -86.431 )
+
+[node name="final_camera_pos" type="Position3D" parent="positions"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 75, -9.5 )
 
 [node name="area_limits" type="Spatial" parent="."]
 transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 9, 83 )
@@ -773,7 +824,7 @@ transform = Transform( 1, 0, -7.10543e-15, 0, 1, 0, 7.10543e-15, 0, 1, -23, 12, 
 shape = SubResource( 35 )
 
 [node name="containers_camera" type="Camera" parent="."]
-transform = Transform( 1, 0, 0, 0, 0.965926, 0.258819, 0, -0.258819, 0.965926, 33.4545, 35, -86.4311 )
+transform = Transform( 1, 0, 0, 0, 0.965926, 0.258819, 0, -0.258819, 0.965926, 0, 75, -9.5 )
 environment = SubResource( 36 )
 far = 300.0
 
@@ -784,6 +835,8 @@ transform = Transform( 1, 0, 0, 0, -0.258819, 0.965926, 0, -0.965926, -0.258819,
 light_energy = 0.4
 shadow_enabled = true
 
+[connection signal="in_container" from="scenario/objects" to="ui/hud" method="_on_objects_in_container"]
+[connection signal="in_container2" from="scenario/objects" to="ui/hud" method="_on_objects_in_container2"]
 [connection signal="body_entered" from="scenario/objects/mini_container/cnt_snr_area" to="scenario/objects" method="_on_cnt_snr_area_body_entered"]
 [connection signal="animation_finished" from="scenario/objects/mini_container/open_door_anim" to="scenario/objects" method="_on_open_door_anim_animation_finished"]
 [connection signal="body_entered" from="scenario/objects/mini_container2/cnt_snr_area" to="scenario/objects" method="_on_cnt2_snr_area_body_entered"]
@@ -796,6 +849,7 @@ shadow_enabled = true
 [connection signal="timeout" from="scenario/objects/Timer_lft" to="scenario/objects" method="_on_Timer_lft_timeout"]
 [connection signal="timeout" from="scenario/autos/spawn_timer" to="scenario/autos/autos_left" method="_on_spawn_timer_timeout"]
 [connection signal="timeout" from="scenario/autos/spawn_timer" to="scenario/autos/autos_right" method="_on_spawn_timer_timeout"]
+[connection signal="timeout" from="ui/hud/MarginContainer/VBoxContainer/HBoxContainer2/time_timer" to="ui/hud" method="_on_time_timer_timeout"]
 [connection signal="area_entered" from="area_limits/left_area_lim" to="scenario/autos/autos_right" method="_on_left_area_lim_area_entered"]
 [connection signal="area_entered" from="area_limits/right_area_lim" to="scenario/autos/autos_left" method="_on_right_area_lim_area_entered"]
 
